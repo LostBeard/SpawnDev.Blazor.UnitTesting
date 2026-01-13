@@ -2,8 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace SpawnDev.Blazor.UnitTesting {
-    public partial class UnitTestsView : IDisposable {
+namespace SpawnDev.Blazor.UnitTesting
+{
+    public partial class UnitTestsView : IDisposable
+    {
         UnitTestRunner unitTestService { get; set; } = new UnitTestRunner();
 
         [Parameter]
@@ -62,12 +64,24 @@ namespace SpawnDev.Blazor.UnitTesting {
             }
         }
 
-        private void UnitTestSet_TestStatusChanged() {
+        private void UnitTestSet_TestStatusChanged()
+        {
             StateHasChanged();
         }
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (!Rendered)
+            {
+                Rendered = true;
+                StateHasChanged();
+            }
+        }
+        bool Rendered = false;
 
-        public void Dispose() {
-            if (_beenInit ) {
+        public void Dispose()
+        {
+            if (_beenInit)
+            {
                 _beenInit = false;
                 unitTestService.CancelTests();
                 unitTestService.TestStatusChanged -= UnitTestSet_TestStatusChanged;
