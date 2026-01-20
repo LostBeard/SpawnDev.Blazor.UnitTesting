@@ -80,11 +80,16 @@ namespace SpawnDev.Blazor.UnitTesting
                     test.ResultText = retStr;
                 }
             }
+            catch (UnsupportedTestException ex)
+            {
+                test.StackTrace = "";
+                test.ResultText = ex.Message ?? "";
+                test.Result = TestResult.Unsupported;
+            }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.StackTrace);
                 test.StackTrace = ex.StackTrace ?? "";
-                test.Error = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                test.Error = ex.InnerException != null ? ex.InnerException.ToString() : ex.ToString();
                 test.Result = TestResult.Error;
             }
             if (string.IsNullOrEmpty(test.ResultText)) test.ResultText = test.Result.ToString();

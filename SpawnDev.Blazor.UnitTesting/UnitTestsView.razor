@@ -28,6 +28,7 @@
                     };
                     var resultClass = test.Result switch
                     {
+                        TestResult.Unsupported => "test-unsupported",
                         TestResult.Success => "test-success",
                         TestResult.Error => "test-error",
                         _ => "",
@@ -57,6 +58,9 @@
                                 case TestState.Done:
                                     switch (test.Result)
                                     {
+                                        case TestResult.Unsupported:
+                                            <span style="color: orange;">@test.ResultText</span>
+                                            break;
                                         case TestResult.Success:
                                             <span style="color: green;">@test.ResultText</span>
                                             break;
