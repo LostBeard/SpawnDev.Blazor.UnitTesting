@@ -11,6 +11,7 @@
             <thead>
                 <tr>
                     <th></th>
+                    <th>#</th>
                     <th>Test Type</th>
                     <th>Method</th>
                     <th>Duration</th>
@@ -18,8 +19,9 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var test in unitTestService.Tests)
+                @for (var i = 0; i < unitTestService.Tests.Count; i++)
                 {
+                    var test = unitTestService.Tests[i];
                     var stateClass = test.State switch
                     {
                         TestState.Done => "test-state-done",
@@ -36,6 +38,9 @@
                     <tr style="padding: 2px;" class="@stateClass @resultClass">
                         <td>
                             <button onclick="@(() => unitTestService.RunTests(test))" disabled="@(unitTestService.State == TestState.Running || test.State == TestState.Running)">Run</button>
+                        </td>
+                        <td class="test-type-name" style="padding: 2px 6px 2px 6px;">
+                            <span style="font-weight: bold;">@i</span>
                         </td>
                         <td class="test-type-name" style="padding: 2px 6px 2px 6px;">
                             <span style="font-weight: bold;">@(test.TestTypeName)</span>
@@ -59,7 +64,7 @@
                                     switch (test.Result)
                                     {
                                         case TestResult.Unsupported:
-                                            <span style="color: orange;">@test.ResultText</span>
+                                            <span style="color: orange;">Skipped: @test.ResultText</span>
                                             break;
                                         case TestResult.Success:
                                             <span style="color: green;">@test.ResultText</span>
