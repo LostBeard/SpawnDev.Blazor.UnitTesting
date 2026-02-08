@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
+using SpawnDev.BlazorJS;
 using System.Reflection;
 
 namespace SpawnDev.Blazor.UnitTesting
 {
     public partial class UnitTestsView : IDisposable
     {
-        UnitTestRunner unitTestService { get; set; } = new UnitTestRunner();
+        UnitTestRunner unitTestService { get; set; } = default!;
 
         [Parameter]
         public IEnumerable<Type>? TestTypes { get; set; }
@@ -18,22 +19,20 @@ namespace SpawnDev.Blazor.UnitTesting
         public Func<Type, object?>? TypeInstanceResolver { get; set; }
 
         [Inject]
-        IServiceProvider ServiceProvider { get; set; }
+        IServiceProvider ServiceProvider { get; set; } = default!;
 
         [Inject]
-        IServiceCollection ServiceDescriptors { get; set; }
+        IServiceCollection ServiceDescriptors { get; set; } = default!;
+
+        [Inject]
+        BlazorJSRuntime JS { get; set; } = default!;
 
         bool _beenInit = false;
 
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
-            LoadFromParams();
-        }
-
-        public UnitTestsView()
-        {
-            unitTestService.OnUnitTestResolverEvent += UnitTestService_OnUnitTestResolverEvent;
+            if (_beenInit) LoadFromParams();
         }
 
         private void UnitTestService_OnUnitTestResolverEvent(UnitTestResolverEvent resolverEvent)
@@ -60,7 +59,10 @@ namespace SpawnDev.Blazor.UnitTesting
             if (!_beenInit)
             {
                 _beenInit = true;
+                unitTestService = new UnitTestRunner(JS);
+                unitTestService.OnUnitTestResolverEvent += UnitTestService_OnUnitTestResolverEvent;
                 unitTestService.TestStatusChanged += UnitTestSet_TestStatusChanged;
+                LoadFromParams();
             }
         }
 
@@ -89,3 +91,4 @@ namespace SpawnDev.Blazor.UnitTesting
         }
     }
 }
+

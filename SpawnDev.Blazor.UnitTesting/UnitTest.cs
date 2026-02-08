@@ -29,5 +29,9 @@ namespace SpawnDev.Blazor.UnitTesting
             Duration = 0;
             State = TestState.None;
         }
+        public override string ToString()
+        {
+            return $"{TestTypeName}.{TestMethodName}";
+        }
     }
 }
