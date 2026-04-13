@@ -9,6 +9,8 @@
 # SpawnDev.Blazor.UnitTesting
 [![NuGet](https://img.shields.io/nuget/dt/SpawnDev.Blazor.UnitTesting.svg?label=SpawnDev.Blazor.UnitTesting)](https://www.nuget.org/packages/SpawnDev.Blazor.UnitTesting) 
 
+> **Note:** This package has been superseded by [SpawnDev.UnitTesting](https://www.nuget.org/packages/SpawnDev.UnitTesting) which provides cross-platform support (Blazor WASM, WPF, Console) and integration with PlaywrightMultiTest. New projects should use SpawnDev.UnitTesting instead.
+
 Unit testing for Blazor
 
 Supports .Net Blazor 6, 7, and 8.
